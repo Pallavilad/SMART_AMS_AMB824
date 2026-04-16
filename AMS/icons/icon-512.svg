@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e293b"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6"/>
+      <stop offset="100%" style="stop-color:#06b6d4"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="100" fill="url(#bg)"/>
+  <rect x="16" y="16" width="480" height="480" rx="90" fill="none" stroke="url(#accent)" stroke-width="3" opacity="0.4"/>
+  <!-- Shield -->
+  <path d="M256 70 L380 140 L380 270 C380 350 325 415 256 445 C187 415 132 350 132 270 L132 140 Z" fill="none" stroke="url(#accent)" stroke-width="8" opacity="0.8"/>
+  <path d="M256 90 L365 150 L365 265 C365 335 315 395 256 420 C197 395 147 335 147 265 L147 150 Z" fill="rgba(30,120,255,0.05)"/>
+  <!-- Checkmark -->
+  <path d="M190 255 L235 305 L325 200" fill="none" stroke="#10b981" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Text -->
+  <text x="256" y="400" text-anchor="middle" font-family="Inter,sans-serif" font-size="42" font-weight="800" fill="white" letter-spacing="5">AMS</text>
+</svg>
+

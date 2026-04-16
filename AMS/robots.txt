@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://pallavilad.github.io/Smart_Attendance_Monitoring_System_using_AMB824/sitemap.xml

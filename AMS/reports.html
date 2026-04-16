@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports | AMS SECURE ATTENDANCE</title>
+    <!-- Fonts and Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="./styles/index.css">
+    <link rel="stylesheet" href="./styles/admin.css?v=3.1">
+    <!-- PWA -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#1e293b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="./icons/icon-192.svg">
+</head>
+<body>
+    <div class="background-effects">
+        <div class="glow-blob blob-1"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- DEMO MODE NOTICE -->
+    <div style="background: rgba(234, 179, 8, 0.1); border-bottom: 1px solid rgba(234, 179, 8, 0.3); color: #eab308; padding: 10px; text-align: center; font-size: 0.9rem; font-weight: 600; position: relative; z-index: 1000;">
+        <i class="fas fa-info-circle" style="margin-right: 8px;"></i> LIVE DEMO MODE: Data calculation is unavailable.
+    </div>
+
+    <header class="navbar">
+        <div class="logo">
+            <h1>AMS<br><span>SECURE ATTENDANCE</span></h1>
+        </div>
+        <nav class="nav-links">
+            <a href="dashboard.html">DASHBOARD</a>
+            <a href="register.html">REGISTRATION</a>
+            <a href="reports.html" class="active">REPORTS</a>
+            <a href="settings.html">SETTINGS</a>
+            <button class="btn-danger small-btn" style="padding: 0.6rem 1.5rem; font-weight: 700; border-radius: 8px;" onclick="window.location.href='login.html'">LOGOUT</button>
+        </nav>
+    </header>
+
+    <main class="dashboard-main">
+        <div class="dashboard-container">
+            <div class="filters">
+                <input type="date" id="startDate" class="form-input">
+                <input type="date" id="endDate" class="form-input">
+                <input type="text" id="filterID" placeholder="Search ID/Name..." class="form-input">
+                <button class="btn-primary" onclick="alert('Filtering requires a live database backend.')">Filter Results</button>
+                <button class="btn-primary" style="background: rgba(30, 120, 255, 0.1); border-color: var(--accent-blue);" onclick="alert('Export functionality is disabled in demo mode.')">Export</button>
+            </div>
+
+            <div class="panel">
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Sl.No</th>
+                                <th>Employee Name</th>
+                                <th>Total Presents</th>
+                                <th>Total Absents</th>
+                                <th>Total Hours</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reportTableBody">
+                            <tr><td colspan="5" style="text-align: center; color: var(--text-secondary);">No reporting data available in static mode.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="./scripts/auth_utils.js?v=4.0"></script>
+    <script src="./scripts/dashboard_core.js?v=3.0"></script>
+    <script src="./scripts/pwa-register.js"></script>
+    <footer class="site-footer" style="text-align: center; width: 100%; padding: 1.5rem 0; margin-top: auto;">
+            <span class="copyright">&copy; 2026 AMS SECURE ATTENDANCE | Powered by E-ARTKEY</span>
+    </footer>
+</body>
+</html>
+

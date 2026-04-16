@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | AMS SECURE ATTENDANCE</title>
+    <!-- Fonts and Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="./styles/index.css">
+    <link rel="stylesheet" href="./styles/admin.css?v=3.0">
+    <!-- PWA -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#1e293b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="./icons/icon-192.svg">
+</head>
+<body>
+    <div class="background-effects">
+        <div class="glow-blob blob-1"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- DEMO MODE NOTICE -->
+    <div style="background: rgba(234, 179, 8, 0.1); border-bottom: 1px solid rgba(234, 179, 8, 0.3); color: #eab308; padding: 10px; text-align: center; font-size: 0.9rem; font-weight: 600; position: relative; z-index: 1000;">
+        <i class="fas fa-info-circle" style="margin-right: 8px;"></i> LIVE DEMO MODE: System settings and diagnostics are read-only.
+    </div>
+
+    <header class="navbar">
+        <div class="logo">
+            <h1>AMS<br><span>SECURE ATTENDANCE</span></h1>
+        </div>
+        <nav class="nav-links">
+            <a href="dashboard.html">DASHBOARD</a>
+            <a href="register.html">REGISTRATION</a>
+            <a href="reports.html">REPORTS</a>
+            <a href="settings.html" class="active">SETTINGS</a>
+            <button class="btn-danger small-btn" style="padding: 0.6rem 1.5rem; font-weight: 700; border-radius: 8px;" onclick="window.location.href='login.html'">LOGOUT</button>
+        </nav>
+    </header>
+
+    <main class="dashboard-main">
+        <div class="dashboard-container">
+            <!-- Device Management (Full Width) -->
+            <div class="panel" style="margin-bottom: 1.5rem;">
+                <div class="panel-header">
+                    <h4>DEVICE MANAGEMENT</h4>
+                </div>
+                <div class="form-group" style="padding: 2rem 1.5rem; border-bottom: 1px solid var(--border-color);">
+                    <input type="text" id="devIdInput" placeholder="Device ID" class="form-input" style="flex:2;">
+                    <input type="text" id="devLocInput" placeholder="Location" class="form-input" style="flex:1;">
+                    <button class="btn-primary" onclick="alert('Adding devices is disabled in demo mode.')">Add</button>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Device ID</th>
+                                <th>Location</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="deviceTableBody">
+                            <tr><td colspan="4" style="text-align: center; color: var(--text-secondary);">No active devices in static preview.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Device Diagnostics (Full Width, Horizontal Layout) -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h4>DEVICE DIAGNOSTICS</h4>
+                </div>
+                <div style="padding: 2rem 1.5rem;">
+                    <div id="diagnosticsBody" style="color: var(--text-secondary); font-size: 0.95rem;">
+                        <div style="display: flex; flex-direction: row; gap: 1.5rem; flex-wrap: wrap;">
+                            <div class="stat-card" style="flex: 1; min-width: 180px; padding: 1.5rem; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 0.5rem; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                                <span style="font-weight: 500; font-size: 0.85rem; color: var(--text-secondary);">System Status</span>
+                                <span style="color: var(--accent-green); font-weight: 700; font-size: 1.1rem;">ONLINE</span>
+                            </div>
+                            <div class="stat-card" style="flex: 1; min-width: 180px; padding: 1.5rem; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 0.5rem; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                                <span style="font-weight: 500; font-size: 0.85rem; color: var(--text-secondary);">Camera Module</span>
+                                <span id="diagCamera" style="color: #64748b; font-weight: 700; font-size: 1.1rem;">DEMO</span>
+                            </div>
+                            <div class="stat-card" style="flex: 1; min-width: 180px; padding: 1.5rem; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 0.5rem; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                                <span style="font-weight: 500; font-size: 0.85rem; color: var(--text-secondary);">Network Ping</span>
+                                <span id="diagNetwork" style="color: var(--accent-green); font-weight: 700; font-size: 1.1rem;">STATIC</span>
+                            </div>
+                            <div class="stat-card" style="flex: 1; min-width: 180px; padding: 1.5rem; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 0.5rem; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                                <span style="font-weight: 500; font-size: 0.85rem; color: var(--text-secondary);">Face Recognition</span>
+                                <span id="diagFace" style="color: #fb923c; font-weight: 700; font-size: 1.1rem;">SIMULATED</span>
+                            </div>
+                            <div class="stat-card" style="flex: 1; min-width: 180px; padding: 1.5rem; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 0.5rem; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                                <span style="font-weight: 500; font-size: 0.85rem; color: var(--text-secondary);">Database</span>
+                                <span style="color: #ef4444; font-weight: 700; font-size: 1.1rem;">NO BACKEND</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Row: Admin Management (full width) -->
+            <div style="margin-top: 1.5rem;">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h4>ADMIN MANAGEMENT</h4>
+                    </div>
+                    <div class="form-group" style="padding: 2rem 1.5rem; border-bottom: 1px solid var(--border-color);">
+                        <input type="text" id="usernameInput" placeholder="Admin Username" class="form-input">
+                        <div class="password-input-wrapper">
+                            <input type="password" id="passwordInput" placeholder="Password" class="form-input">
+                            <button type="button" class="toggle-password" onclick="togglePasswordVisibility('passwordInput', this.querySelector('i'))">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <button class="btn-primary" onclick="alert('Admin creation is disabled.')">Create</button>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Sl.No</th>
+                                    <th>Username</th>
+                                    <th>Role</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userTableBody">
+                                <tr><td colspan="4" style="text-align: center; color: var(--text-secondary);">No static admin list available.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="./scripts/auth_utils.js?v=4.0"></script>
+    <script src="./scripts/dashboard_core.js?v=3.0"></script>
+    <script src="./scripts/pwa-register.js"></script>
+    <footer class="site-footer" style="text-align: center; width: 100%; padding: 1.5rem 0; margin-top: auto;">
+            <span class="copyright">&copy; 2026 AMS SECURE ATTENDANCE | Powered by E-ARTKEY</span>
+    </footer>
+</body>
+</html>
+

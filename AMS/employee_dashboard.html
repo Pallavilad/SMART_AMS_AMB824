@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Attendance - AMS Secure Attendance</title>
+    <!-- Fonts and Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="./styles/index.css">
+    <link rel="stylesheet" href="./styles/admin.css?v=1.2">
+    <!-- PWA -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#1e293b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="./icons/icon-192.svg">
+    <style>
+        .employee-info-bar {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .user-details h3 {
+            color: var(--accent-blue);
+            font-size: 1.25rem;
+            margin: 0;
+        }
+        .user-details span {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .stat-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .stat-card:hover { transform: translateY(-5px); }
+        .stat-card h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .stat-card p { color: var(--text-secondary); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .status-late { color: #f43f5e !important; font-weight: 700; }
+        .status-ontime { color: #10b981 !important; font-weight: 700; }
+
+        /* CHANGE PASSWORD MODAL */
+        .password-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .password-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .password-card {
+            background: #1e293b;
+            width: 100%;
+            max-width: 420px;
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .password-modal.show .password-card {
+            transform: scale(1) translateY(0);
+        }
+        .password-card h2 {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+        }
+        .password-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+        .password-card .form-group {
+            margin-bottom: 1.2rem;
+            position: relative;
+        }
+        .password-card label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .password-card .password-input-wrapper {
+            position: relative;
+        }
+        .password-card .form-input {
+            width: 100%;
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            padding-right: 3rem; /* Space for eye */
+        }
+        .password-card .toggle-password {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: color 0.2s;
+            z-index: 10;
+        }
+        .password-card .toggle-password:hover {
+            color: var(--accent-blue);
+        }
+        .password-card .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .password-modal .btn-cancel {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .password-modal .btn-cancel:hover { background: rgba(255, 255, 255, 0.1); }
+        .password-modal .btn-save {
+            background: var(--accent-blue);
+            border: none;
+            color: white;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(30, 120, 255, 0.3);
+        }
+        .password-modal #passwordMessage {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            text-align: center;
+            min-height: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-effects">
+        <div class="glow-blob blob-1"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- DEMO MODE NOTICE -->
+    <div style="background: rgba(234, 179, 8, 0.1); border-bottom: 1px solid rgba(234, 179, 8, 0.3); color: #eab308; padding: 10px; text-align: center; font-size: 0.9rem; font-weight: 600; position: relative; z-index: 1000;">
+        <i class="fas fa-info-circle" style="margin-right: 8px;"></i> LIVE DEMO MODE: Backend functionality and data persistence are disabled on GitHub Pages.
+    </div>
+
+    <header class="navbar">
+        <div class="logo">
+            <h1>AMS<br><span>SECURE ATTENDANCE</span></h1>
+        </div>
+        <nav class="nav-links">
+            <button class="btn-primary small-btn" style="background: rgba(30, 120, 255, 0.1); border: 1px solid var(--accent-blue);" onclick="togglePasswordModal()">Change Password</button>
+            <button class="btn-danger" style="padding: 0.5rem 1.7rem; background: #ef4444; color: white; font-weight: 700; border-radius: 8px;" onclick="window.location.href='login.html'">Logout</button>
+        </nav>
+    </header>
+
+    <main class="dashboard-main">
+        <div class="dashboard-container" style="max-width: 1100px;">
+            <div class="employee-info-bar">
+                <div class="user-details">
+                    <h3 id="empName">Guest Employee</h3>
+                    <span id="empID">DEMO_USER</span>
+                </div>
+                <div class="badge" style="background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 11px;">STATIC PREVIEW</div>
+            </div>
+
+            <div class="panel" style="margin-bottom: 2rem;">
+                <div class="panel-header">
+                    <h4>TODAY'S ATTENDANCE</h4>
+                    <span id="todayDate" style="font-size: 0.8rem; color: var(--text-secondary);">DD-MM-YYYY</span>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 200px;">Punch In</th>
+                                <th>Punch Out</th>
+                                <th>Total Hours</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="todayTableBody">
+                            <tr><td colspan="4" style="text-align: center; color: var(--text-secondary);">Punch history requires a live backend.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="filters" style="padding: 1.5rem; gap: 1rem; flex-wrap: nowrap;">
+                <div style="flex:1;">
+                    <label>Start Date</label>
+                    <input type="date" id="startDate" class="form-input" style="width: 100%; background: #0f172a;">
+                </div>
+                <div style="flex:1;">
+                    <label>End Date</label>
+                    <input type="date" id="endDate" class="form-input" style="width: 100%; background: #0f172a;">
+                </div>
+                <button class="btn-primary" style="height: 48px; border-radius: 6px;" onclick="loadHistory()">Get Attendance</button>
+                <button class="btn-primary" style="height: 48px; border-radius: 6px; background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: var(--text-secondary);" onclick="resetFilter()">Clear</button>
+            </div>
+
+            <div class="table-wrapper" style="max-height: 400px;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Day</th>
+                            <th>Punch In</th>
+                            <th>Punch Out</th>
+                            <th>Total Hours</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody"></tbody>
+                </table>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h1 id="statPresent" style="color: var(--accent-green);">0</h1>
+                    <p>Present</p>
+                </div>
+                <div class="stat-card">
+                    <h1 id="statAbsent" style="color: #f43f5e;">0</h1>
+                    <p>Absent</p>
+                </div>
+                <div class="stat-card">
+                    <h1 id="statSundays" style="color: #fb923c;">0</h1>
+                    <p>Sundays</p>
+                </div>
+            </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Change Password Modal -->
+    <div id="passwordModal" class="password-modal">
+        <div class="password-card">
+            <h2>Secure Access</h2>
+            <p>Update your dashboard login credentials.</p>
+            
+            <div class="form-group">
+                <label>Current Password</label>
+                <div class="password-input-wrapper">
+                    <input type="password" id="currentPass" class="form-input" placeholder="••••••••">
+                    <i class="fas fa-eye toggle-password" onclick="togglePasswordVisibility('currentPass', this)"></i>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>New Password</label>
+                <div class="password-input-wrapper">
+                    <input type="password" id="newPass" class="form-input" placeholder="••••••••">
+                    <i class="fas fa-eye toggle-password" onclick="togglePasswordVisibility('newPass', this)"></i>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Confirm New Password</label>
+                <div class="password-input-wrapper">
+                    <input type="password" id="confirmPass" class="form-input" placeholder="••••••••">
+                    <i class="fas fa-eye toggle-password" onclick="togglePasswordVisibility('confirmPass', this)"></i>
+                </div>
+            </div>
+
+            <div id="passwordMessage"></div>
+
+            <div class="btn-group">
+                <button class="btn-cancel" onclick="togglePasswordModal()">Cancel</button>
+                <button class="btn-save" id="savePasswordBtn" onclick="submitPasswordChange()">Update Now</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./scripts/auth_utils.js?v=4.0"></script>
+    <script src="./scripts/employee_dashboard.js"></script>
+    <script src="./scripts/pwa-register.js"></script>
+    <footer class="site-footer" style="text-align: center; width: 100%; padding: 1.5rem 0; margin-top: auto;">
+            <span class="copyright">&copy; 2026 AMS SECURE ATTENDANCE | Powered by E-ARTKEY</span>
+    </footer>
+</body>
+</html>
+

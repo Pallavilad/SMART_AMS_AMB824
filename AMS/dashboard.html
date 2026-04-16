@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | AMS SECURE ATTENDANCE</title>
+    <!-- Fonts and Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="./styles/index.css">
+    <link rel="stylesheet" href="./styles/admin.css?v=3.0">
+    <!-- PWA -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#1e293b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="./icons/icon-192.svg">
+</head>
+<body>
+    <div class="background-effects">
+        <div class="glow-blob blob-1"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- DEMO MODE NOTICE -->
+    <div style="background: rgba(234, 179, 8, 0.1); border-bottom: 1px solid rgba(234, 179, 8, 0.3); color: #eab308; padding: 10px; text-align: center; font-size: 0.9rem; font-weight: 600; position: relative; z-index: 1000;">
+        <i class="fas fa-info-circle" style="margin-right: 8px;"></i> LIVE DEMO MODE: Backend functionality and data persistence are disabled on GitHub Pages.
+    </div>
+
+    <header class="navbar">
+        <div class="logo">
+            <h1>AMS<br><span>SECURE ATTENDANCE</span></h1>
+            <div class="status-badge" id="connStatus">
+                <span class="dot"></span> System Static (Online)
+            </div>
+        </div>
+        <nav class="nav-links">
+            <a href="dashboard.html" class="active">DASHBOARD</a>
+            <a href="register.html">REGISTRATION</a>
+            <a href="reports.html">REPORTS</a>
+            <a href="settings.html">SETTINGS</a>
+            <button class="btn-danger small-btn" style="padding: 0.6rem 1.5rem; font-weight: 700; border-radius: 8px;" onclick="window.location.href='login.html'">LOGOUT</button>
+        </nav>
+    </header>
+
+    <main class="dashboard-main">
+        <div class="dashboard-container">
+            <div class="stats-grid" style="display: flex; flex-direction: row; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+                <div class="stat-card" style="padding: 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; flex: 1; min-width: 150px;">
+                    <p style="margin: 0 0 0.5rem 0; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Total Presents</p>
+                    <h1 id="totalPresents" style="color: var(--accent-green); font-size: 2.5rem; margin: 0; font-weight: 800;">0</h1>
+                </div>
+                <div class="stat-card" style="padding: 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; flex: 1; min-width: 150px;">
+                    <p style="margin: 0 0 0.5rem 0; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Total Absents</p>
+                    <h1 id="totalAbsents" style="color: #f43f5e; font-size: 2.5rem; margin: 0; font-weight: 800;">0</h1>
+                </div>
+                <div class="stat-card" style="padding: 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; flex: 1; min-width: 150px;">
+                    <p style="margin: 0 0 0.5rem 0; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Active Now (IN)</p>
+                    <h1 id="activeEmployees" style="color: var(--accent-blue); font-size: 2.5rem; margin: 0; font-weight: 800;">0</h1>
+                </div>
+                <div class="stat-card" style="padding: 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; flex: 1; min-width: 150px;">
+                    <p style="margin: 0 0 0.5rem 0; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Registered Devices</p>
+                    <h1 id="registeredDevices" style="color: #fb923c; font-size: 2.5rem; margin: 0; font-weight: 800;">0</h1>
+                </div>
+            </div>
+
+            <div class="dashboard-grid" style="display: flex; flex-direction: column; gap: 2rem;">
+                <!-- Recent Logs Panel -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <h4>RECENT ATTENDANCE LOGS</h4>
+                        <button class="btn-primary small-btn" id="viewAllBtn">Refresh</button>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Sl.No</th>
+                                    <th>Employee ID</th>
+                                    <th>Employee Name</th>
+                                    <th>Action</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentLogsTableBody">
+                                <tr><td colspan="5" style="text-align: center; color: var(--text-secondary);">Connect a live API to view logs...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Authorized Employees Panel (Registered Names) -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <h4>AUTHORIZED EMPLOYEES (REGISTERED NAMES)</h4>
+                        <a href="register.html" class="btn-primary small-btn" style="text-decoration: none;">Manage</a>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Sl.No</th>
+                                    <th>Employee ID</th>
+                                    <th>Employee Name</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userTableBody">
+                                <tr><td colspan="3" style="text-align: center; color: var(--text-secondary);">No static data available.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="./scripts/auth_utils.js?v=4.0"></script>
+    <script src="./scripts/dashboard_core.js?v=3.0"></script>
+    <script src="./scripts/pwa-register.js"></script>
+    <footer class="site-footer" style="text-align: center; width: 100%; padding: 1.5rem 0; margin-top: auto;">
+            <span class="copyright">&copy; 2026 AMS SECURE ATTENDANCE | Powered by E-ARTKEY</span>
+    </footer>
+</body>
+</html>
+
